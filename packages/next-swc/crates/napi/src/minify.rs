@@ -91,6 +91,14 @@ impl Task for MinifyTask {
             |handler| {
                 GLOBALS.set(&Default::default(), || {
                     let fm = self.code.to_file(self.c.cm.clone());
+                    
+                    let fm_clone = fm.clone();
+
+                    let start = fm_clone.start_pos;
+                    let end = fm_clone.end_pos;
+
+                    println!("minify start_pos: {}", start.to_u32());
+                    println!("minify end_pos: {}", end.to_u32());
 
                     self.c.minify(fm, handler, &self.opts)
                 })

@@ -126,6 +126,7 @@ program
   .action((directory, options) =>
     // ensure process exits after build completes so open handles/connections
     // don't cause process to hang
+    // code-walkthrough - step 1 - build
     import('../cli/next-build.js').then((mod) =>
       mod.nextBuild(options, directory).then(() => process.exit(0))
     )

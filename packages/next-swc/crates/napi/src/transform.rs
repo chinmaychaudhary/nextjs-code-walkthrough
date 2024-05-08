@@ -40,7 +40,7 @@ use napi::bindgen_prelude::*;
 use next_custom_transforms::chain_transforms::{custom_before_pass, TransformOptions};
 use turbopack_binding::swc::core::{
     base::{try_with_handler, Compiler, TransformOutput},
-    common::{comments::SingleThreadedComments, errors::ColorConfig, FileName, Mark, GLOBALS},
+    common::{comments::SingleThreadedComments, errors::ColorConfig, source_map::Pos, FileName, Mark, GLOBALS},
     ecma::transforms::base::pass::noop,
 };
 
@@ -107,6 +107,16 @@ impl Task for TransformTask {
                                     )
                                 }
                             };
+                            
+                            let fm_clone = fm.clone();
+
+                            let start = fm_clone.start_pos;
+                            let end = fm_clone.end_pos;
+
+                            println!("transform file name {}", fm_clone.name);
+                            println!("transform start_pos: {}", start.to_u32());
+                            println!("transform end_pos: {}", end.to_u32());
+
                             let unresolved_mark = Mark::new();
                             let mut options = options.patch(&fm);
                             options.swc.unresolved_mark = Some(unresolved_mark);
@@ -166,6 +176,7 @@ impl Task for TransformTask {
     }
 }
 
+// code-walkthrough - step 18 - the function used to transform when bindings.transform is invoked
 #[napi]
 pub fn transform(
     src: Either3<String, Buffer, Undefined>,

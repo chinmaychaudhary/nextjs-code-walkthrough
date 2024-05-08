@@ -385,6 +385,7 @@ export default async function getBaseWebpackConfig(
 
   // eagerly load swc bindings instead of waiting for transform calls
   if (!babelConfigFile && isClient) {
+    // code-walkthrough - step 9 - load next-swc bindings but do nothing
     await loadBindings(config.experimental.useWasmBinary)
   }
 
@@ -439,6 +440,7 @@ export default async function getBaseWebpackConfig(
     }
 
     return {
+      // code-walkthrough - step 10 - next-swc-loader for webpack
       loader: 'next-swc-loader',
       options: {
         isServer: isNodeOrEdgeCompilation,
@@ -1165,6 +1167,7 @@ export default async function getBaseWebpackConfig(
       // The loaders Next.js provides
       alias: [
         'error-loader',
+        // code-walkthrough - step 11 - to be loaded from packages/next/src/build/webpack/loaders/next-swc-loader.ts
         'next-swc-loader',
         'next-client-pages-loader',
         'next-image-loader',

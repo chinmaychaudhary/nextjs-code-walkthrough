@@ -254,6 +254,7 @@ export async function loadBindings(
     // with other reasons than `ERR_MODULE_NOT_FOUND`.
     // - Lastly, falls back to wasm binding where possible.
     try {
+      // code-walkthrough - step 15 - loadNative bindings
       return resolve(loadNative())
     } catch (a) {
       if (
@@ -1339,6 +1340,8 @@ function loadNative(importPath?: string) {
 
   if (!bindings) {
     for (const triple of triples) {
+      // code-walkthrough - step 16
+      // import from /<project>/node_modules/@next/swc-darwin-arm64/next-swc.darwin-arm64.node
       let pkg = importPath
         ? path.join(
             importPath,
@@ -1379,6 +1382,7 @@ function loadNative(importPath?: string) {
           options.jsc.parser.syntax = options.jsc.parser.syntax ?? 'ecmascript'
         }
 
+        // code-walkthrough - step 17 - the transform function exposed from next-swc node binding
         return bindings.transform(
           isModule ? JSON.stringify(src) : src,
           isModule,
@@ -1514,7 +1518,12 @@ export async function isWasm(): Promise<boolean> {
 }
 
 export async function transform(src: string, options?: any): Promise<any> {
+  // code-walkthrough - step 14.a - loadBindings
   let bindings = await loadBindings()
+  
+  // code-walkthrough - step 14.b
+  // why can't try/catch help in identifying the `src` - because panic can't be caught
+  // https://github.com/chinmayhem/napi-scratch
   return bindings.transform(src, options)
 }
 
