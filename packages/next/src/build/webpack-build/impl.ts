@@ -130,6 +130,7 @@ export async function webpackBuildImpl(
         dev: false,
       })
       return Promise.all([
+        // code-walkthrough - step 8 - get webpack config
         getBaseWebpackConfig(dir, {
           ...commonWebpackOptions,
           middlewareMatchers: entrypoints.middlewareMatchers,
@@ -341,6 +342,7 @@ export async function webpackBuildImpl(
   }
 }
 
+// code-walkthrough - step 7 - workerMain fn invoked in the prev step
 // the main function when this file is run as a worker
 export async function workerMain(workerData: {
   compilerName: keyof typeof COMPILER_INDEXES

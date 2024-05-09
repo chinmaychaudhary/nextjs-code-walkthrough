@@ -39,8 +39,9 @@ async function webpackBuildWithWorker(
   prunedBuildContext.pluginState = pluginState
 
   const getWorker = (compilerName: string) => {
+    // code-walkthrough - step 5 - webpack build with worker
     const _worker = new Worker(path.join(__dirname, 'impl.js'), {
-      exposedMethods: ['workerMain'],
+      exposedMethods: ['workerMain'], // worker main is exposed
       numWorkers: 1,
       maxRetries: 0,
       forkOptions: {
@@ -75,7 +76,8 @@ async function webpackBuildWithWorker(
 
   for (const compilerName of compilerNames) {
     const worker = getWorker(compilerName)
-
+    
+    // code-walkthrough - step 6 - invoke workerMain
     const curResult = await worker.workerMain({
       buildContext: prunedBuildContext,
       compilerName,
@@ -138,6 +140,7 @@ export function webpackBuild(
 ): ReturnType<typeof webpackBuildWithWorker> {
   if (withWorker) {
     debug('using separate compiler workers')
+    // code-walkthrough - step 4 - webpackbuild
     return webpackBuildWithWorker(compilerNames)
   } else {
     debug('building all compilers in same process')

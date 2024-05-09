@@ -170,6 +170,7 @@ async function loaderTransform(
 
   const swcSpan = parentTrace.traceChild('next-swc-transform')
   return swcSpan.traceAsyncFn(() =>
+    // code-walkthrough - step 13 - invoke transform with programmaticOptions which has swcPlugins
     transform(source as any, programmaticOptions).then((output) => {
       if (output.eliminatedPackages && this.eliminatedPackages) {
         for (const pkg of JSON.parse(output.eliminatedPackages)) {
@@ -225,6 +226,7 @@ export default function swcLoader(
   const callback = this.async()
   loaderSpan
     .traceAsyncFn(() =>
+      // code-walkthrough - step 12 - transform
       loaderTransform.call(this, loaderSpan, inputSource, inputSourceMap)
     )
     .then(

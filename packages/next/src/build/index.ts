@@ -1626,6 +1626,7 @@ export default async function build(
         if (runServerAndEdgeInParallel || collectServerBuildTracesInParallel) {
           let durationInSeconds = 0
 
+          // code-walkthrough - step 3.a - server build
           const serverBuildPromise = webpackBuild(useBuildWorker, [
             'server',
           ]).then((res) => {
@@ -1675,6 +1676,7 @@ export default async function build(
           }
           await edgeBuildPromise
 
+          // code-walkthrough - step 3.b - client build
           await webpackBuild(useBuildWorker, ['client']).then((res) => {
             durationInSeconds += res.duration
             traceMemoryUsage('Finished client compilation', nextBuildSpan)

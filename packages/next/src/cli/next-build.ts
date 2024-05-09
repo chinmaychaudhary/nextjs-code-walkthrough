@@ -69,6 +69,7 @@ const nextBuild = (options: NextBuildOptions, directory?: string) => {
     process.env.TURBOPACK = '1'
   }
 
+  // code-walkthrough - step 2
   return build(
     dir,
     profile,
